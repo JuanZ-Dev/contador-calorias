@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
-import type { ChangeEvent, Dispatch, FormEvent } from "react";
+import type { ChangeEvent, FormEvent } from "react";
 
 import { v4 as uuidv4 } from "uuid";
 import { categories } from "../data/categories";
 import type { Activity } from "../types";
-import type {
-  ActivityActions,
-  ActivityState,
-} from "../reducers/activity-reducer";
-
-type FormProps = {
-  dispatch: Dispatch<ActivityActions>;
-  state: ActivityState;
-};
+import useActivity from "../hooks/useActivity";
 
 const initialState: Activity = {
   id: uuidv4(),
@@ -21,7 +13,8 @@ const initialState: Activity = {
   calories: 0,
 };
 
-export default function Form({ dispatch, state }: FormProps) {
+export default function Form() {
+  const { state, dispatch } = useActivity();
   const [activity, setActivity] = useState<Activity>(initialState);
 
   useEffect(() => {
@@ -105,7 +98,7 @@ export default function Form({ dispatch, state }: FormProps) {
           type="number"
           className="border border-slate-300 p-2 rounded-lg"
           placeholder="Ej. 300 o 500"
-          value={activity.calories}
+          value={activity.calories || ""}
           onChange={handleChange}
         />
       </div>
